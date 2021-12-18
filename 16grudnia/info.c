@@ -12,7 +12,7 @@ potrzebujemy wektora np
 double *przypadki = malloc(N*sizeof(double))
 dynamiczna alokacja pamieci (uzycie ktorejs z mallocow)
 petla od 0 do N
- przypadki[0]=drand48();
+ przypadki[i]=drand48();
  mozna od razu sprawdzac w jaki przedzial wpada za pomoca sortowanie przez zliczanie
  liczba*liczba przedzialow = wskaznik do przedzialu
  przedzialy[przypadki[i]*n]++
