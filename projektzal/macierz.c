@@ -1,23 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(){
+int main()
+{
     int wiersze, i, j, kolumny;
 
     printf("%s\n", "Podaj liczbę wierszy macierzy:");
-    scanf("%i\n", &wiersze);
+    scanf("%i", &wiersze);
     printf("%s\n", "Podaj liczbę kolumn macierzy:");
-    scanf("%i\n", &kolumny);
+    scanf("%i", &kolumny);
 
-    double **macierz=calloc(kolumny, sizeof(int));
-    for(i=0; i<kolumny; i++){
-    *macierz[i]=calloc(wiersze, sizeof(int));}
+    int **macierz = calloc(kolumny, sizeof(int*));
+    for (i = 0; i < kolumny; i++)
+    {
+        macierz[i] = calloc(wiersze, sizeof(int));
+    }
 
-    for(i=0; i<wiersze; i++){
-        for(j=0; j<kolumny; j++){
-            printf("%i", /*macierz(j)*/0);
-            printf("\n");
+
+    for (i = 0; i < wiersze; i++)
+    {
+        for (j = 0; j < kolumny; j++)
+        {
+            printf("%i", macierz[j][i]);
         }
+        printf("\n");
     }
 
     return 0;
