@@ -47,6 +47,7 @@ while(kroki>0){
             macierz_future[j][i] = logika(liczba_sasiadow, i, j);
         }
     }
+    drukowanie_macierzy(wiersze, kolumny, macierz_current, j, i);
     macierz_current=macierz_future;
     kroki--;}
 
