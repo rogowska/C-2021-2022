@@ -7,22 +7,22 @@ int logika(int sasiedzi, int i, int j, int **macierz_current)
     {
         if (sasiedzi == 3)
         {
-            return macierz_current[j][i] = 1;
+            return 1;
         }
         else
         {
-            return macierz_current[j][i] = 0;
+            return 0;
         }
     }
     if (macierz_current[j][i] == 1)
     {
         if (sasiedzi == 2 || sasiedzi == 3)
         {
-            return macierz_current[j][i] = 1;
+            return 1;
         }
         else
         {
-            return macierz_current[j][i] = 0;
+            return 0;
         }
     }
 }
