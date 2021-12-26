@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int sasiedzi(int i, int j, int wiersze, int kolumny)
+int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz_current)
 {
     int licznik, ile_i, ile_j, sasiedzi, k, l;
     licznik = 1;
@@ -52,9 +52,9 @@ int sasiedzi(int i, int j, int wiersze, int kolumny)
     {
         for (l = 0; l < ile_j; l++)
         {
-            sasiedzi+=macierz[tab_j[l]][tab_i[k]]];
+            sasiedzi+=macierz_current[tab_j[l]][tab_i[k]];
         }
     }
-    sasiedzi -= macierz[j][i];
+    sasiedzi -= macierz_current[j][i];
     return sasiedzi;
 }

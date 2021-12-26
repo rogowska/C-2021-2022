@@ -1,24 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int logika(int sasiedzi, int i, int j)
+int logika(int sasiedzi, int i, int j, int **macierz_current)
 {
-    if (macierz[j][i] == 0)
+    if (macierz_current[j][i] == 0)
     {
         if (sasiedzi == 3)
         {
-            return macierz[j][i] = 1;
-        }
-    }
-    if (macierz[j][i] == 1)
-    {
-        if (sasiedzi == 2 || sasiedzi == 3)
-        {
-            return macierz[j][i] = 1;
+            return macierz_current[j][i] = 1;
         }
         else
         {
-            return macierz[j][i] = 0;
+            return macierz_current[j][i] = 0;
+        }
+    }
+    if (macierz_current[j][i] == 1)
+    {
+        if (sasiedzi == 2 || sasiedzi == 3)
+        {
+            return macierz_current[j][i] = 1;
+        }
+        else
+        {
+            return macierz_current[j][i] = 0;
         }
     }
 }

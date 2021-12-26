@@ -43,11 +43,11 @@ while(kroki>0){
     for (i = 0; i < wiersze; i++)
     {
         for (j = 0; j < kolumny; j++){
-            liczba_sasiadow = sasiedzi(i, j, wiersze, kolumny);
-            macierz_future[j][i] = logika(liczba_sasiadow, i, j);
+            liczba_sasiadow = sasiedzi(i, j, wiersze, kolumny, **macierz_current);
+            macierz_future[j][i] = logika(liczba_sasiadow, i, j, **macierz_current);
         }
     }
-    drukowanie_macierzy(wiersze, kolumny, macierz_current, j, i);
+    drukowanie_macierzy(wiersze, kolumny, **macierz_current, j, i);
     macierz_current=macierz_future;
     kroki--;}
 
