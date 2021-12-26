@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
+int macierz()
 {
     int wiersze, i, j, kolumny;
 
