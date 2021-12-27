@@ -1,1 +1,1 @@
-int logika(int sasiedzi, int i, int j, int macierz_current);
+int logika(int, int, int, int**);

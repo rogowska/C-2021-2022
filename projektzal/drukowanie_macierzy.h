@@ -1,1 +1,1 @@
-int drukowanie_macierzy(int wiersze, int kolumny, int macierz_current, int j, int i);
+int drukowanie_macierzy(int, int, int**, int, int);

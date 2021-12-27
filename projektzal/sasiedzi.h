@@ -1,1 +1,1 @@
-int sasiedzi(int i, int j, int wiersze, int kolumny, int macierz_current);
+int sasiedzi(int, int, int, int, int**);
