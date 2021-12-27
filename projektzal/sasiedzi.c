@@ -19,7 +19,7 @@ int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz_current)
     neighbours_row_index[neighbours_counter++] = i;
     if (under)
     {
-        neighbours_row_index[neighbours_counter] = i + 1;
+        neighbours_row_index[neighbours_counter++] = i + 1;
     }
 
     counter_i=neighbours_counter;
@@ -32,12 +32,12 @@ int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz_current)
     neighbours_counter = 0;
     if (left)
     {
-        neighbours_column_index[neighbours_counter++] = i - 1;
+        neighbours_column_index[neighbours_counter++] = j - 1;
     }
-    neighbours_column_index[neighbours_counter++] = i;
+    neighbours_column_index[neighbours_counter++] = j;
     if (right)
     {
-        neighbours_column_index[neighbours_counter] = i + 1;
+        neighbours_column_index[neighbours_counter++] = j + 1;
     }
     counter_j=neighbours_counter;
     neighbours = 0;
