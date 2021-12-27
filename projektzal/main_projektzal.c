@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "logika.h"
+#include "sasiedzi.h"
+#include "drukowanie_macierzy.h"
 
 int main()
 {

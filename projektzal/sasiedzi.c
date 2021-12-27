@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "sasiedzi.h"
 
 int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz_current)
 {
