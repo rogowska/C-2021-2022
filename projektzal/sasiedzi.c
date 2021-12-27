@@ -4,58 +4,51 @@
 
 int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz_current)
 {
-    int licznik, ile_i, ile_j, sasiedzi, k, l;
-    licznik = 1;
-    if (i - 1 >= 0)
+    int counter_i, counter_j, neighbours, k, l;
+    
+    int over = i - 1 >= 0 ? 1 : 0; /* 1 - true, 0 - false*/
+    int under = i + 1 < wiersze ? 1 : 0;
+    int neighbours_row_amount = 1 + over + under; /*1 is for current cell*/
+
+    int *neighbours_row_index = calloc(neighbours_row_amount, sizeof(int));
+    int neighbours_counter = 0;
+    if (over)
     {
-        licznik++;
+        neighbours_row_index[neighbours_counter++] = i - 1;
     }
-    if (i + 1 <= wiersze)
+    neighbours_row_index[neighbours_counter++] = i;
+    if (under)
     {
-        licznik++;
-    }
-
-    ile_i = licznik;
-
-    int *tab_i = calloc(ile_i, sizeof(int));
-
-    while (licznik > 0)
-    {
-        tab_i[licznik] = i + 1;
-        i--;
-        licznik--;
+        neighbours_row_index[neighbours_counter] = i + 1;
     }
 
-    licznik = 1;
-    if (j - 1 >= 0)
+    counter_i=neighbours_counter;
+
+    int left = j - 1 >= 0 ? 1 : 0; /* 1 - true, 0 - false*/
+    int right = j + 1 < kolumny ? 1 : 0;
+    int neighbours_column_amount = 1 + left + right; /*1 is for current cell*/
+
+    int *neighbours_column_index = calloc(neighbours_column_amount, sizeof(int));
+    neighbours_counter = 0;
+    if (left)
     {
-        licznik++;
+        neighbours_column_index[neighbours_counter++] = i - 1;
     }
-    if (j + 1 <= kolumny)
+    neighbours_column_index[neighbours_counter++] = i;
+    if (right)
     {
-        licznik++;
+        neighbours_column_index[neighbours_counter] = i + 1;
     }
+    counter_j=neighbours_counter;
+    neighbours = 0;
 
-    ile_j = licznik;
-
-    int *tab_j = calloc(ile_j, sizeof(int));
-
-    while (licznik > 0)
+    for (k = 0; k < counter_i; k++)
     {
-        tab_j[licznik] = j + 1;
-        j--;
-        licznik--;
-    }
-
-    sasiedzi = 0;
-
-    for (k = 0; k < ile_i; k++)
-    {
-        for (l = 0; l < ile_j; l++)
+        for (l = 0; l < counter_j; l++)
         {
-            sasiedzi+=macierz_current[tab_j[l]][tab_i[k]];
+            neighbours += macierz_current[neighbours_column_index[l]][neighbours_row_index[k]];
         }
     }
-    sasiedzi -= macierz_current[j][i];
-    return sasiedzi;
+    neighbours -= macierz_current[j][i];
+    return neighbours;
 }

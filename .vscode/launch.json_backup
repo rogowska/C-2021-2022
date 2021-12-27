@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "gcc-9 - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/projektzal/main_projektzal",
+            "program": "$main_projektzal.c/$main_projektzal",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -21,7 +21,9 @@
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 }
-            ]
+            ],
+            "preLaunchTask": "C/C++: gcc-9 build active file",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
 }
