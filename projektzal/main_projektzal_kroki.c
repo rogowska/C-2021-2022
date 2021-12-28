@@ -48,11 +48,14 @@ int main()
             for (j = 0; j < kolumny; j++)
             {
                 liczba_sasiadow = sasiedzi(i, j, wiersze, kolumny, macierz_current);
+                printf("%i [%i,%i] =%i\n", liczba_sasiadow, j, i, macierz_current[j][i]);
                 macierz_future[j][i] = logika(liczba_sasiadow, i, j, macierz_current);
             }
         }
         drukowanie_macierzy(wiersze, kolumny, macierz_current, j, i);
-        macierz_current = macierz_future;
+        for(int k=0; k<wiersze; k++){
+            macierz_current[k]=macierz_future[k];
+        }
         kroki--;
     }
 
