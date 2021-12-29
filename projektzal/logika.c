@@ -26,5 +26,5 @@ int logika(int sasiedzi, int i, int j, int **macierz_current)
             return 0;
         }
     }
-    return 0;
+    return 6;
 }

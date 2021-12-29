@@ -1,1 +1,1 @@
-int drukowanie_macierzy(int, int, int**, int, int);
+int drukowanie_macierzy(int, int, int**);

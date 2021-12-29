@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "logika.h"
 #include "sasiedzi.h"
 #include "drukowanie_macierzy.h"
+
 
 int main()
 {
@@ -28,7 +30,7 @@ int main()
     {
         macierz_future[i] = calloc(wiersze, sizeof(int));
     }
-
+    
     srand(time(NULL));
 
     for (i = 0; i < wiersze; i++)
@@ -38,27 +40,28 @@ int main()
             printf("%i", macierz_current[j][i] = rand() % 2);
         }
         printf("\n");
-    }
+    } 
     printf("\n");
 
     while (kroki > 0)
     {
+        printf("%s %d\n", "Numer iteracji", kroki);
+        drukowanie_macierzy(wiersze, kolumny, macierz_current);
         for (i = 0; i < wiersze; i++)
         {
             for (j = 0; j < kolumny; j++)
             {
                 liczba_sasiadow = sasiedzi(i, j, wiersze, kolumny, macierz_current);
-                printf("%i [%i,%i] =%i\n", liczba_sasiadow, j, i, macierz_current[j][i]);
                 macierz_future[j][i] = logika(liczba_sasiadow, i, j, macierz_current);
             }
         }
-        drukowanie_macierzy(wiersze, kolumny, macierz_current, j, i);
-        for(int k=0; k<wiersze; k++){
-            macierz_current[k]=macierz_future[k];
+        drukowanie_macierzy(wiersze, kolumny, macierz_future);
+        for (int k = 0; k < kolumny; k++)
+        {
+            macierz_current[k] = macierz_future[k];
         }
         kroki--;
     }
-
 
     return 0;
 }
