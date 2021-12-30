@@ -1,8 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "sasiedzi.h"
 
-int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz_current)
+int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz)
 {
     int counter_i, counter_j, neighbours, k, l;
     
@@ -46,9 +46,9 @@ int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz_current)
     {
         for (l = 0; l < counter_j; l++)
         {
-            neighbours += macierz_current[neighbours_column_index[l]][neighbours_row_index[k]];
+            neighbours += macierz[neighbours_column_index[l]][neighbours_row_index[k]];
         }
     }
-    neighbours -= macierz_current[j][i];
+    neighbours -= macierz[j][i];
     return neighbours;
 }

@@ -1,0 +1,1 @@
+int zabezpieczenia(int, int, int);

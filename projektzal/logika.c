@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "logika.h"
 
 int logika(int sasiedzi, int i, int j, int **macierz_current)
@@ -26,5 +24,5 @@ int logika(int sasiedzi, int i, int j, int **macierz_current)
             return 0;
         }
     }
-    return 6;
+    return 0;
 }
