@@ -1,1 +1,0 @@
-int obraz_macierzy(int, int, int **);
