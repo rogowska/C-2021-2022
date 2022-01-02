@@ -10,7 +10,7 @@
 int main()
 {
 
-    int wiersze, i, j, kolumny, liczba_sasiadow, kroki;
+    int wiersze, i, j, kolumny, liczba_sasiadow, kroki, populacja;
 
     printf("%s\n", "Podaj liczbę wierszy macierzy:");
     scanf("%i", &wiersze);
@@ -51,45 +51,25 @@ int main()
     printf("\n");
     sleep(2);
 
-    /*macierz_current[0][0] = 0;
-    macierz_current[0][1] = 0;
-    macierz_current[0][2] = 0;
-    macierz_current[0][3] = 0;
-    macierz_current[1][0] = 1;
-    macierz_current[1][1] = 0;
-    macierz_current[1][2] = 0;
-    macierz_current[1][3] = 0;
-    macierz_current[2][0] = 1;
-    macierz_current[2][1] = 1;
-    macierz_current[2][2] = 1;
-    macierz_current[2][3] = 1;
-    macierz_current[3][0] = 1;
-    macierz_current[3][1] = 0;
-    macierz_current[3][2] = 0;
-    macierz_current[3][3] = 1;
-    macierz_current[4][0] = 0;
-    macierz_current[4][1] = 0;
-    macierz_current[4][2] = 0;
-    macierz_current[4][3] = 0;
-    macierz_current[5][0] = 0;
-    macierz_current[5][1] = 0;
-    macierz_current[5][2] = 0;
-    macierz_current[5][3] = 0;*/
-
     while (kroki > 0)
     {
-
+        populacja = 0;
         for (i = 0; i < wiersze; i++)
         {
             for (j = 0; j < kolumny; j++)
             {
                 liczba_sasiadow = sasiedzi(i, j, wiersze, kolumny, macierz_current);
                 macierz_future[j][i] = logika(liczba_sasiadow, i, j, macierz_current);
+                if (macierz_future[j][i] == 1)
+                {
+                    populacja++;
+                }
             }
         }
         printf("\e[1;1H\e[2J");
         sleep(1);
-        printf("%s %d\n", "Numer iteracji", kroki);
+        printf("%s %d\n", "Numer iteracji:", kroki);
+        printf("%s %i\n", "Populacja w danym kroku wynosi:", populacja);
         drukowanie_macierzy(wiersze, kolumny, macierz_future);
         for (int k = 0; k < kolumny; k++)
         {

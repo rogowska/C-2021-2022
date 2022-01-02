@@ -1,7 +1,9 @@
+/*Oliwia Rogowska*/
 #include <stdio.h>
 #include "drukowanie_macierzy.h"
 
 int drukowanie_macierzy(int wiersze, int kolumny, int **macierz)
+/*funkcja drukujaca macierz na ekranie terminalu*/
 {
     int i, j;
     for (i = 0; i < wiersze; i++)

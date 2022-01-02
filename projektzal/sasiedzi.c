@@ -1,50 +1,58 @@
+/*Oliwia Rogowska*/
 #include <stdlib.h>
 #include <stdio.h>
 #include "sasiedzi.h"
 
 int sasiedzi(int i, int j, int wiersze, int kolumny, int **macierz)
 {
-    int counter_i, counter_j, neighbours, k, l;
-    
-    int over = i - 1 >= 0 ? 1 : 0; /* 1 - true, 0 - false*/
-    int under = i + 1 < wiersze ? 1 : 0;
-    int neighbours_row_amount = 1 + over + under; /*1 is for current cell*/
+    int neighbours, k, l;
+    int neighbours_row_index[3]; /*tworzenie tablic dla indeksow i oraz j sasiadow danej komorki*/
+    int neighbours_column_index[3];
 
-    int *neighbours_row_index = calloc(neighbours_row_amount, sizeof(int));
-    int neighbours_counter = 0;
-    if (over)
+    if (i - 1 >= 0)
     {
-        neighbours_row_index[neighbours_counter++] = i - 1;
+        neighbours_row_index[0] = i - 1;
     }
-    neighbours_row_index[neighbours_counter++] = i;
-    if (under)
+    else
     {
-        neighbours_row_index[neighbours_counter++] = i + 1;
+        neighbours_row_index[0] = wiersze - 1;
+    };
+    if (i + 1 < wiersze)
+    {
+        neighbours_row_index[1] = i + 1;
     }
+    else
+    {
+        neighbours_row_index[1] = 0;
+    };
 
-    counter_i=neighbours_counter;
+    neighbours_row_index[2] = i;
 
-    int left = j - 1 >= 0 ? 1 : 0; /* 1 - true, 0 - false*/
-    int right = j + 1 < kolumny ? 1 : 0;
-    int neighbours_column_amount = 1 + left + right; /*1 is for current cell*/
+    if (j - 1 >= 0)
+    {
+        neighbours_column_index[0] = j - 1;
+    }
+    else
+    {
+        neighbours_column_index[0] = kolumny - 1;
+    };
+    if (j + 1 < kolumny)
+    {
+        neighbours_column_index[1] = j + 1;
+    }
+    else
+    {
+        neighbours_column_index[1] = 0;
+    };
 
-    int *neighbours_column_index = calloc(neighbours_column_amount, sizeof(int));
-    neighbours_counter = 0;
-    if (left)
-    {
-        neighbours_column_index[neighbours_counter++] = j - 1;
-    }
-    neighbours_column_index[neighbours_counter++] = j;
-    if (right)
-    {
-        neighbours_column_index[neighbours_counter++] = j + 1;
-    }
-    counter_j=neighbours_counter;
+    neighbours_column_index[2] = j;
+ 
     neighbours = 0;
 
-    for (k = 0; k < counter_i; k++)
+/*laczenie dwoch tablic aby uzyskac indeksy kolnretnych sasiadow branej pod uwage komorki*/
+    for (k = 0; k < 3; k++)
     {
-        for (l = 0; l < counter_j; l++)
+        for (l = 0; l < 3; l++)
         {
             neighbours += macierz[neighbours_column_index[l]][neighbours_row_index[k]];
         }
