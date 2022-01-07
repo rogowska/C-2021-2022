@@ -43,6 +43,13 @@ Mandatory arguments to long options are mandatory for short options too.
 #include <stdio.h>
 
 int zabezpieczenia(int wiersze, int kolumny, int kroki){
+// zabezpieczenia --> validate_user_input
+// wiersze - row_amount / rows
+// kolumny - columns / column_amount
+// kroki --> steps / step amount
+// można by było tu rzucić komentarz do funkcji w stylu: jeśli któryś z poniższych warunków zostanie spełniony, 
+// to użytkownik otrzyma komunikat o błędzie i program zostanie zakończony
+// jeśli parametry wejściowe podane przez użytkownika okażą się poprawne - program będzie kontynouwany
  if (wiersze<1){
      printf("Podaj dodatnia liczbe wierszy\n");
      return 0;
