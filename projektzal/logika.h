@@ -1,1 +1,0 @@
-int logika(int, int, int, int**);

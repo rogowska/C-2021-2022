@@ -1,0 +1,1 @@
+int validate_user_input(int, int, int);

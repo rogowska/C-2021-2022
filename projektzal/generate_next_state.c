@@ -1,15 +1,15 @@
 /*Oliwia Rogowska*/
-#include "logika.h"
+#include "generate_next_state.h"
 
-int logika(int sasiedzi, int i, int j, int **macierz_current) // funkcje powinny być czasownikami, tu proponuję: generate_next_state
+int generate_next_state(int neighbours, int row_index, int column_index, int **matrix)
     // jako argumenty: neighbours, row_index, column_index, current_matrix - w związku z tym zmiana zmiennych w całym kodzie
     
 /*implementacja logiki wg Conwaya - 
 decydowanie o stanie komorki na podstawie liczby sasiadow i jej stanu poprzedniego*/
 {
-    if (macierz_current[j][i] == 0)
+    if (matrix[column_index][row_index] == 0)
     {
-        if (sasiedzi == 3)
+        if (neighbours == 3)
         {
             return 1;
         }
@@ -18,9 +18,9 @@ decydowanie o stanie komorki na podstawie liczby sasiadow i jej stanu poprzednie
             return 0;
         }
     }
-    if (macierz_current[j][i] == 1)
+    if (matrix[column_index][row_index] == 1)
     {
-        if (sasiedzi == 2 || sasiedzi == 3)
+        if (neighbours == 2 || neighbours == 3)
         {
             return 1;
         }
