@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-    int rows, row_index, column_index, columns, neighbours_amount, steps, population, delay;
+    int rows, row_index, column_index, columns, neighbours_amount, steps, population, delay, copy_index;
     /*Initial value for program arguments that are used to validate user input*/
     delay = 1;
     rows = -1;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
         printf("%s %d\n", "Iteration:", steps);
         printf("%s %i\n", "Population:", population);
         print_matrix(rows, columns, matrix_future);
-        for (int copy_index = 0; copy_index < columns; copy_index++)
+        for (copy_index = 0; copy_index < columns; copy_index++)
         {
             /*copying data from matrix_future to matrix_current*/
             memcpy(matrix_current[copy_index], matrix_future[copy_index], sizeof(int) * rows);
