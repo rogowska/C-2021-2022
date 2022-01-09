@@ -2,11 +2,11 @@
 #include "generate_next_state.h"
 
 int generate_next_state(int neighbours, int row_index, int column_index, int **matrix)
-    // jako argumenty: neighbours, row_index, column_index, current_matrix - w związku z tym zmiana zmiennych w całym kodzie
     
-/*implementacja logiki wg Conwaya - 
-decydowanie o stanie komorki na podstawie liczby sasiadow i jej stanu poprzedniego*/
+/*Implementation of Conway logic - 
+deciding the state of a cell based on the number of its neighbours and the previous state*/
 {
+    /*Calculating next state for the dead cell*/
     if (matrix[column_index][row_index] == 0)
     {
         if (neighbours == 3)
@@ -18,6 +18,7 @@ decydowanie o stanie komorki na podstawie liczby sasiadow i jej stanu poprzednie
             return 0;
         }
     }
+    /*Calculating next state for the living cell*/
     if (matrix[column_index][row_index] == 1)
     {
         if (neighbours == 2 || neighbours == 3)

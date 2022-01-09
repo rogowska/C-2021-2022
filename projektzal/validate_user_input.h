@@ -1,1 +1,1 @@
-int validate_user_input(int, int, int);
+int validate_user_input(int*, int*, int*, int*, int, char**);

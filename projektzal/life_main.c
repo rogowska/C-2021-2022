@@ -11,87 +11,17 @@
 int main(int argc, char *argv[])
 {
     int rows, row_index, column_index, columns, neighbours_amount, steps, population, delay;
+    /*Initial value for program arguments that are used to validate user input*/
     delay = 1;
+    rows = -1;
+    columns = -1;
+    steps = -1;
 
-    if (argc == 4)
-    {
-        columns = argv[1];
-        rows = argv[2];
-        steps = argv[3];
-    }
-    else if (argc == 5)
-    {
-        columns = argv[1]; // jak sprawdzic czy jest to int? ? ? jak do funkcji wewnetrzej ? ? ?
-        rows = argv[2];
-        steps = argv[3];
-        delay = argv[4];
-    }
-    else if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)
-    {
-        printf("usage:  life --columns --rows --steps [--delay]
-    or
-        life --tryout
-
-Symulator game of 'Life' based on 23/3 John Conway rule with pseudo-random initial conditions.
-
-Mandatory arguments to long options are mandatory for short options too.
-
-       -c, --columns=n
-              column size of board as positive value in range <1-10000>
-
-       -d, --delay=n
-              delay in seconds between printing current board (default 1)
-
-       -h, --help
-              display this help and exit
-
-       -r, --rows=n
-              rows size of board as positive value in range <1-10000>
-
-       -s, --steps=n
-              number of simulation steps, positive natural number
-
-       -t, --tryout
-              run demo, predifine usaged arguments: -c 40 -r 20 -s 100");
-        return 0;
-    }
-    else if (strcmp(argv[1], "--tryout") == 0)
-    {
-        columns = 40;
-        rows = 20;
-        steps = 100;
-    }
-    else
+    if (validate_user_input(&rows, &columns, &steps, &delay, argc, argv) == 0)
     {
         return 0;
     }
 
-    // getting input values from the user, validating value type
-    printf("%s\n", "Set row amount for a board(1-10000):");
-    if ((scanf("%i", &rows)) != 1)
-    {
-        printf("The value should be an integer. Exiting...\n");
-        return 0;
-    };
-    printf("%s\n", "Set column amount for a board(1-10000):");
-    if (scanf("%i", &columns) != 1)
-    {
-        printf("The value should be an integer. Exiting...\n");
-        return 0;
-    };
-    printf("%s\n", "Set step amount for simulation:");
-    if (scanf("%i", &steps) != 1)
-    {
-        printf("The value should be an integer. Exiting...\n");
-        return 0;
-    };
-
-    if (validate_user_input(rows, columns, steps) == 0)
-    {
-        return 0;
-    }
-
-    /*creating a matrix*/
     int **matrix_current = calloc(columns, sizeof(int *));
     for (row_index = 0; row_index < columns; row_index++)
     {
@@ -122,7 +52,7 @@ Mandatory arguments to long options are mandatory for short options too.
     printf("\n");
     sleep(2);
 
-    /*counting the future state of cells*/
+    /*counting the future state of cells on board*/
     while (steps > 0)
     {
         population = 0;
@@ -139,7 +69,7 @@ Mandatory arguments to long options are mandatory for short options too.
             }
         }
 
-        /*printing the results*/
+        /*clearing terminal and printing the results*/
         printf("\e[1;1H\e[2J");
         sleep(delay);
         printf("%s %d\n", "Iteration:", steps);
@@ -147,8 +77,8 @@ Mandatory arguments to long options are mandatory for short options too.
         print_matrix(rows, columns, matrix_future);
         for (int copy_index = 0; copy_index < columns; copy_index++)
         {
-            memcpy(matrix_current[copy_index], matrix_future[copy_index], sizeof(int) * rows);
             /*copying data from matrix_future to matrix_current*/
+            memcpy(matrix_current[copy_index], matrix_future[copy_index], sizeof(int) * rows);
         }
         steps--;
     }
