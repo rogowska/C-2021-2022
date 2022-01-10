@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     }
 
     /*printing generated board*/
-    printf("\e[1;1H\e[2J");
+    printf("\e[1;1H\e[2J"); /*clear terminal*/
     printf("Generated board:\n");
     print_matrix(rows, columns, matrix_current);
     printf("\n");
