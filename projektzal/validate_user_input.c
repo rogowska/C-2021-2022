@@ -88,9 +88,9 @@ int validate_user_input(int *row_amount, int *column_amount, int *step_amount, i
                 printf("The value of delay should be an integer. Exiting...\n");
                 return 0;
             };
-            if (*delay < 1)
+            if (*delay < 0)
             {
-                printf("Value of delay must be positive. Exiting...\n");
+                printf("Value of delay must be greater than zero. Exiting...\n");
                 return 0;
             }
             break;
