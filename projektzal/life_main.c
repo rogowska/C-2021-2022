@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
 #include "generate_next_state.h"
 #include "count_neighbours.h"
 #include "print_matrix.h"
@@ -10,14 +11,15 @@
 
 int main(int argc, char *argv[])
 {
-    int rows, row_index, column_index, columns, neighbours_amount, steps, population, delay, copy_index;
+    int random_value, init_density, rows, row_index, column_index, columns, neighbours_amount, steps, population, delay, copy_index;
     /*Initial value for program arguments that are used to validate user input*/
     delay = 1;
     rows = -1;
     columns = -1;
     steps = -1;
+    init_density = 50;
 
-    if (validate_user_input(&rows, &columns, &steps, &delay, argc, argv) == 0)
+    if (validate_user_input(&init_density, &rows, &columns, &steps, &delay, argc, argv) == 0)
     {
         return 0;
     }
@@ -41,7 +43,13 @@ int main(int argc, char *argv[])
     {
         for (column_index = 0; column_index < columns; column_index++)
         {
-            matrix_current[column_index][row_index] = rand() % 2;
+            random_value = rand() % 101;
+            if(random_value>init_density || init_density==0){
+                matrix_current[column_index][row_index]=0;
+            }
+            else{
+                matrix_current[column_index][row_index]=1;
+            }
         }
     }
 

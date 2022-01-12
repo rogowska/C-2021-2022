@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int validate_user_input(int *row_amount, int *column_amount, int *step_amount, int *delay, int argc, char *argv[])
+int validate_user_input(int *init_density, int *row_amount, int *column_amount, int *step_amount, int *delay, int argc, char *argv[])
 {
     int c;
     int option_index = 0;
-
     /*user can provide long and short options*/
     static struct option long_options[] =
         {
@@ -17,13 +16,27 @@ int validate_user_input(int *row_amount, int *column_amount, int *step_amount, i
             {"rows", required_argument, NULL, 'r'},
             {"steps", required_argument, NULL, 's'},
             {"delay", required_argument, NULL, 'd'},
+            {"init", required_argument, NULL, 'i'},
             {NULL, 0, NULL, 0}};
 
     /*loop breaks after checking all provided arguments*/
-    while ((c = getopt_long(argc, argv, "thc:r:s:d:", long_options, &option_index)) != -1)
+    while ((c = getopt_long(argc, argv, "i:thc:r:s:d:", long_options, &option_index)) != -1)
     {
         switch (c)
         {
+        case 'i':
+                        if ((sscanf(optarg, "%i", init_density)) != 1)
+            {
+                printf("The value of initial density should be an integer. Exiting...\n");
+                return 0;
+            };
+            if (*init_density < 0 || *init_density > 100)
+            {
+                printf("Value of initial density must be in range <0,100>. Exiting...\n");
+                return 0;
+            }
+            break;
+
         case 't':
             *delay = 1;
             *row_amount = 20;
@@ -118,6 +131,9 @@ int validate_user_input(int *row_amount, int *column_amount, int *step_amount, i
 
                    "\t-s, --steps=n\n"
                    "\t\tnumber of simulation steps, positive natural number\n"
+
+                   "\t-i --init=n\n"
+                   "\t\tinitial density of living cell on board in percent\n"
 
                    "\t-t, --tryout\n"
                    "\t\trun demo, predifine usaged arguments: -c 40 -r 20 -s 100\n");
