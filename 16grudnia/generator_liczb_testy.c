@@ -18,11 +18,26 @@ int max(int number1, int number2)
     }
 }
 
+int porownywanie(const void *x1, const void *x2);
+int porownywanie(const void *x1, const void *x2)
+{
+    if ((*(double *)x1) == (*(double *)x2))
+    {
+        return 0;
+    }
+    if ((*(double *)x1) > (*(double *)x2))
+    {
+        return 1;
+    }
+    return -1;
+}
+
 int main()
 {
     int ilosc_przypadkow, liczba_przedzialow, maximum, i, j;
     float gwiazdka_normalizacja;
     int przedzialy[100] = {0};
+    clock_t tp, tk;
 
     printf("%s\n", "podaj ilosc liczb na ktorych chcesz przeprowadzic testy:");
     scanf("%i", &ilosc_przypadkow);
@@ -54,6 +69,7 @@ int main()
         int numer_przedzialu = przypadki[i] * liczba_przedzialow;
         przedzialy[numer_przedzialu]++;
     }
+
     /*szukanie max wartosci przedzialu*/
     maximum = przedzialy[0];
     for (i = 1; i < liczba_przedzialow; i++)
@@ -63,7 +79,7 @@ int main()
 
     gwiazdka_normalizacja = maximum / 150.0;
 
-    /*wykres*/
+    /*histogram pierwszy*/
     for (i = 0; i < liczba_przedzialow; i++)
     {
         printf("%i\t", i);
@@ -73,5 +89,40 @@ int main()
         }
         printf("\n");
     }
+
+    /*sortowanie i wyznaczanie czasu sortowania*/
+    tp = clock();
+
+    qsort(&przypadki[0], ilosc_przypadkow, sizeof(double), porownywanie);
+
+    tk = clock();
+
+    double czas_sortowania = (tk - tp) / (double)CLOCKS_PER_SEC;
+    printf("%s%lf\n", "Czas sortowania wynosi: (sec)", czas_sortowania);
+
+    /*histogram drugi nie wiem czy dobrze wykonalam, chyba nie, powinno byc minimalnie zebate nwm jak*/
+    double deltai = przedzialy[i + 1] - przedzialy[i];
+
+    for (i = 0; i < ilosc_przypadkow; i++)
+    {
+        przedzialy[i] = 0;
+    }
+
+    for (i = 0; i < ilosc_przypadkow; i++)
+    {
+        int ktory_przedzial = deltai * liczba_przedzialow; /*tu nie jestem pewna*/
+        przedzialy[ktory_przedzial]++;
+    }
+
+    for (i = 0; i < liczba_przedzialow; i++)
+    {
+        printf("%i\t", i);
+        for (j = 0; j < (przedzialy[i] / gwiazdka_normalizacja); j++)
+        {
+            printf("%c", '*');
+        }
+        printf("\n");
+    }
+
     return 0;
 }
