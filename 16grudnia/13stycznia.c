@@ -8,7 +8,7 @@ jak wywolac qsort
 i napisac funkcje porownujaca dla niego
 jak zmierzyc czas wykonania kawalka kodu 
 napisac wlasny bubblesort i qsort, dopisac je - ktore biora juz tylko dwa arguemt, macierz i rozmiar, i powinnismy sortowac w tej samej tablicy
-czasy dla 3 na jednym wykresie, najlepiej dopasowac funkcje do nich
+czasy dla 3 na jednym wykresie, najlepiej dopasowac funkcje do nich na wzglad od liczby przypadkow...?
 
 przypadki[i] - mamy ja posortowac
 qsort(*przypadki[0], ilosc elementow, sizeof(double), porownywanie)
