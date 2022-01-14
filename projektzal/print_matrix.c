@@ -16,7 +16,7 @@ int print_matrix(int rows, int columns, int **matrix)
             }
             else
             {
-                printf("\u2591");
+                printf(".");
             }
         }
         printf("\n");
