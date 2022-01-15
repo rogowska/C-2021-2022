@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 
 int max(int number1, int number2);
 int max(int number1, int number2)
@@ -34,7 +35,8 @@ int porownywanie(const void *x1, const void *x2)
 
 int main()
 {
-    int ilosc_przypadkow, liczba_przedzialow, maximum, i, j;
+    int ktory_przedzial, ilosc_przypadkow, liczba_przedzialow, maximum, i, j;
+    double deltai;
     float gwiazdka_normalizacja;
     int przedzialy[100] = {0};
     clock_t tp, tk;
@@ -101,27 +103,41 @@ int main()
     printf("%s%lf\n", "Czas sortowania wynosi: (sec)", czas_sortowania);
 
     /*histogram drugi nie wiem czy dobrze wykonalam, chyba nie, powinno byc minimalnie zebate nwm jak*/
-    double deltai = przedzialy[i + 1] - przedzialy[i];
-
-    for (i = 0; i < ilosc_przypadkow; i++)
+    for (i = 0; i < liczba_przedzialow; i++)
     {
         przedzialy[i] = 0;
     }
 
-    for (i = 0; i < ilosc_przypadkow; i++)
+    for (i = 0; i < ilosc_przypadkow - 1; i++)
     {
-        int ktory_przedzial = deltai * liczba_przedzialow; /*tu nie jestem pewna*/
+        deltai = fabs(przypadki[i + 1] - przypadki[i]);
+        /*printf("%f\t%f\t%f\n", deltai, przypadki[i + 1], przypadki[i]);*/
+        ktory_przedzial = deltai * liczba_przedzialow;
+
         przedzialy[ktory_przedzial]++;
     }
 
+    /*szukanie max wartosci przedzialu*/
+    maximum = przedzialy[0];
+    for (i = 1; i < liczba_przedzialow; i++)
+    {
+        maximum = max(maximum, przedzialy[i]);
+    }
+
+    gwiazdka_normalizacja = maximum / 150.0;
+
     for (i = 0; i < liczba_przedzialow; i++)
     {
-        printf("%i\t", i);
-        for (j = 0; j < (przedzialy[i] / gwiazdka_normalizacja); j++)
+        if (przedzialy[i] != 0)
         {
-            printf("%c", '*');
+
+            printf("%i\t", i);
+            for (j = 0; j < (przedzialy[i] / gwiazdka_normalizacja); j++)
+            {
+                printf("%c", '*');
+            }
+            printf("\n");
         }
-        printf("\n");
     }
 
     return 0;
