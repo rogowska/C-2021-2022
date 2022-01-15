@@ -1,4 +1,5 @@
 /*Oliwia Rogowska*/
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -44,11 +45,13 @@ int main(int argc, char *argv[])
         for (column_index = 0; column_index < columns; column_index++)
         {
             random_value = rand() % 101;
-            if(random_value>init_density || init_density==0){
-                matrix_current[column_index][row_index]=0;
+            if (random_value > init_density || init_density == 0)
+            {
+                matrix_current[column_index][row_index] = 0;
             }
-            else{
-                matrix_current[column_index][row_index]=1;
+            else
+            {
+                matrix_current[column_index][row_index] = 1;
             }
         }
     }
@@ -79,7 +82,10 @@ int main(int argc, char *argv[])
 
         /*clearing terminal and printing the results*/
         printf("\e[1;1H\e[2J");
-        sleep(delay);
+
+        struct timespec ts = {0, delay * 1000000L}; /* delay in [ms] */
+        nanosleep(&ts, NULL);
+
         printf("%s %d\n", "Iteration:", steps);
         printf("%s %i\n", "Population:", population);
         print_matrix(rows, columns, matrix_future);
