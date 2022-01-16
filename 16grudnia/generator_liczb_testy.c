@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
+#include "bubblesort.h"
+#include "quicksort.h"
 
 int max(int number1, int number2);
 int max(int number1, int number2)
@@ -100,7 +102,26 @@ int main()
     tk = clock();
 
     double czas_sortowania = (tk - tp) / (double)CLOCKS_PER_SEC;
-    printf("%s%lf\n", "Czas sortowania wynosi: (sec)", czas_sortowania);
+    printf("%s%lf\n", "Czas sortowania qsort wynosi: (sec)", czas_sortowania);
+
+    tp = clock();
+
+    quickSort(przypadki, 0, ilosc_przypadkow);
+
+    tk = clock();
+
+    czas_sortowania = (tk - tp) / (double)CLOCKS_PER_SEC;
+    printf("%s%lf\n", "Czas sortowania quickSort wynosi: (sec)", czas_sortowania);
+
+   tp = clock();
+
+    bubbleSort(przypadki, ilosc_przypadkow);
+
+    tk = clock();
+
+    czas_sortowania = (tk - tp) / (double)CLOCKS_PER_SEC;
+    printf("%s%lf\n", "Czas sortowania bubblesort wynosi: (sec)", czas_sortowania);
+
 
     /*histogram drugi nie wiem czy dobrze wykonalam, chyba nie, powinno byc minimalnie zebate nwm jak*/
     for (i = 0; i < liczba_przedzialow; i++)
