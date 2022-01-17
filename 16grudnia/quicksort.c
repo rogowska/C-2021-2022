@@ -1,38 +1,29 @@
 #include "swap.h"
 
-int partition(double array[], int low, int high)
+int hoarePartition(double a[], int p, int r)
 {
-
-    int j;
-
-    int pivot = array[high];
-
-    int i = (low - 1);
-
-    for (j = low; j < high; j++)
+    double x = a[p];
+    int i = p - 1, j = r + 1;
+    while (1)
     {
-        if (array[j] <= pivot)
-        {
-
+        do
+            j--;
+        while (a[j] > x);
+        do
             i++;
-
-            swap(&array[i], &array[j]);
-        }
+        while (a[i] < x);
+        if (i < j)
+            swap(&a[i], &a[j]);
+        else
+            return j;
     }
-
-    swap(&array[i + 1], &array[high]);
-
-    return (i + 1);
 }
 
-void quickSort(double array[], int low, int high)
+void quickSort(double arr[], int start, int end)
 {
-    if (low < high)
-    {
-        int pi = partition(array, low, high);
-
-        quickSort(array, low, pi - 1);
-
-        quickSort(array, pi + 1, high);
-    }
+    if (end <= start)
+        return;
+    int q = hoarePartition(arr, start, end);
+    quickSort(arr, start, q);
+    quickSort(arr, q + 1, end);
 }
