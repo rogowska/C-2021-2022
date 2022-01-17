@@ -137,7 +137,7 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
                    "\t\tlivng cell location on board is generated randomly\n"
 
                    "\t-t, --tryout\n"
-                   "\t\trun demo with predifine value for arguments: -c 40 -r 20 -s 100 -d 1\n"
+                   "\t\trun demo with predifined value for arguments: -c 40 -r 20 -s 100 -d 1\n"
                    "\t\tother arguments are ignored\n");
             return 0;
 
