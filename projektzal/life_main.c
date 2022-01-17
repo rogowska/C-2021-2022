@@ -2,8 +2,8 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 #include "generate_next_state.h"
 #include "count_neighbours.h"
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     /*generating initial board with random values*/
     srand(time(NULL));
-
+    population = 0;
     for (row_index = 0; row_index < rows; row_index++)
     {
         for (column_index = 0; column_index < columns; column_index++)
@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
             else
             {
                 matrix_current[column_index][row_index] = 1;
+                population++;
             }
         }
     }
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
     /*printing generated board*/
     printf("\e[1;1H\e[2J"); /*clear terminal*/
     printf("Generated board:\n");
+    printf("%s %i\n", "Population:", population);
     print_matrix(rows, columns, matrix_current);
     printf("\n");
     sleep(2);
@@ -83,8 +85,7 @@ int main(int argc, char *argv[])
         /*clearing terminal and printing the results*/
         printf("\e[1;1H\e[2J");
 
-        struct timespec ts = {0, delay * 1000000L}; /* delay in [ms] */
-        nanosleep(&ts, NULL);
+        sleep(delay);
 
         printf("%s %d\n", "Iteration:", steps);
         printf("%s %i\n", "Population:", population);

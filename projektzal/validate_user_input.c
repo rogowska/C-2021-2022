@@ -121,7 +121,7 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
                    "\t\tcolumn size of board as positive value in range <1-10000>\n"
 
                    "\t-d, --delay=n\n"
-                   "\t\tdelay in seconds between printing current board (default 1)\n"
+                   "\t\tdelay in seconds between printing current board (default 1 sec)\n"
 
                    "\t-h, --help\n"
                    "\t\tdisplay this help and exit\n"
@@ -133,10 +133,12 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
                    "\t\tnumber of simulation steps, positive natural number\n"
 
                    "\t-i --init=n\n"
-                   "\t\tinitial density of living cell on board in percent\n"
+                   "\t\tinitial density of living cell on board in percent (default 50),\n"
+                   "\t\tlivng cell location on board is generated randomly\n"
 
                    "\t-t, --tryout\n"
-                   "\t\trun demo, predifine usaged arguments: -c 40 -r 20 -s 100\n");
+                   "\t\trun demo with predifine value for arguments: -c 40 -r 20 -s 100 -d 1\n"
+                   "\t\tother arguments are ignored\n");
             return 0;
 
         case '?':
