@@ -9,6 +9,11 @@
 #include "count_neighbours.h"
 #include "print_matrix.h"
 #include "validate_user_input.h"
+#include "check_geometry.h"
+#include "fill_matrix.h"
+#include "save_matrix.h"
+#include "header.h"
+const int BOARD_SIDE_MAX = 10000;
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +30,12 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    char file_name[50] = "sinc.csv";
+    if (check_geometry(&rows, &columns, file_name) == 0)
+    {
+        return 0;
+    }
+
     int **matrix_current = calloc(columns, sizeof(int *));
     for (row_index = 0; row_index < columns; row_index++)
     {
@@ -37,9 +48,14 @@ int main(int argc, char *argv[])
         matrix_future[row_index] = calloc(rows, sizeof(int));
     }
 
-    /*generating initial board with random values*/
-    srand(time(NULL));
     population = 0;
+    if (fill_matrix(matrix_current, &population, file_name) == 0)
+    {
+        return 0;
+    }
+
+    /*generating initial board with random values
+    srand(time(NULL));
     for (row_index = 0; row_index < rows; row_index++)
     {
         for (column_index = 0; column_index < columns; column_index++)
@@ -56,16 +72,19 @@ int main(int argc, char *argv[])
             }
         }
     }
+*/
 
-    /*printing generated board*/
+    save_matrix(rows, columns, matrix_current, "out.csv");
+    
+    /*printing on console generated board*/
     printf("\e[1;1H\e[2J"); /*clear terminal*/
     printf("Generated board:\n");
     printf("%s %i\n", "Population:", population);
     print_matrix(rows, columns, matrix_current);
     printf("\n");
     sleep(2);
-
-    /*counting the future state of cells on board*/
+    
+    /*calculating the future state of cells on board*/
     while (steps > 0)
     {
         population = 0;
@@ -82,14 +101,13 @@ int main(int argc, char *argv[])
             }
         }
 
-        /*clearing terminal and printing the results*/
+        /*clearing terminal and printing on console the results*/
         printf("\e[1;1H\e[2J");
-
         sleep(delay);
-
         printf("%s %d\n", "Iteration:", steps);
         printf("%s %i\n", "Population:", population);
         print_matrix(rows, columns, matrix_future);
+
         for (copy_index = 0; copy_index < columns; copy_index++)
         {
             /*copying data from matrix_future to matrix_current*/

@@ -2,6 +2,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "header.h"
 
 int validate_user_input(int *init_density, int *row_amount, int *column_amount, int *step_amount, int *delay, int argc, char *argv[])
 {
@@ -56,7 +57,7 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
                 return 0;
             }
             /*the selected limit prevents waiting too long for the display of the future board*/
-            if (*column_amount > 10000)
+            if (*column_amount > BOARD_SIDE_MAX)
             {
                 printf("Value of columns must be under 10000. Exiting...\n");
                 return 0;
@@ -75,7 +76,7 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
                 return 0;
             }
             /*the selected limit prevents waiting too long for the display of the future board*/
-            if (*row_amount > 10000)
+            if (*row_amount > BOARD_SIDE_MAX)
             {
                 printf("Value of row must be under 10000. Exiting...\n");
                 return 0;
