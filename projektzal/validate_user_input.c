@@ -2,10 +2,12 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "header.h"
 
-int validate_user_input(int *init_density, int *row_amount, int *column_amount, int *step_amount, int *delay, int argc, char *argv[])
+int validate_user_input(char *input_file, char *output_file, int *borning_rule, int *surviving_rule, int *init_density, int *row_amount, int *column_amount, int *step_max, int *step_min, int *delay, int argc, char *argv[])
 {
+    char result_range[30];
     int c;
     int option_index = 0;
     /*user can provide long and short options*/
@@ -13,27 +15,71 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
         {
             {"help", no_argument, NULL, 'h'},
             {"tryout", no_argument, NULL, 't'},
-            {"columns", required_argument, NULL, 'c'},
             {"rows", required_argument, NULL, 'r'},
-            {"steps", required_argument, NULL, 's'},
+            {"columns", required_argument, NULL, 'c'},
+            {"result-range", required_argument, NULL, 'z'},
             {"delay", required_argument, NULL, 'd'},
-            {"init", required_argument, NULL, 'i'},
+            {"init-population", required_argument, NULL, 'p'},
+            {"input-file", required_argument, NULL, 'i'},
+            {"output-file", required_argument, NULL, 'o'},
+            {"borning-rule", required_argument, NULL, 'b'},
+            {"surviving-rule", required_argument, NULL, 's'},
             {NULL, 0, NULL, 0}};
 
     /*loop breaks after checking all provided arguments*/
-    while ((c = getopt_long(argc, argv, "i:thc:r:s:d:", long_options, &option_index)) != -1)
+    while ((c = getopt_long(argc, argv, "p:thr:c:z:d:i:o:b:s:", long_options, &option_index)) != -1)
     {
         switch (c)
         {
         case 'i':
-                        if ((sscanf(optarg, "%i", init_density)) != 1)
+            if ((sscanf(optarg, "%s", input_file)) != 1)
             {
-                printf("The value of initial density should be an integer. Exiting...\n");
+                printf("The path to file with initial data not provided. Exiting...\n");
+                return 0;
+            }
+            break;
+
+        case 'o':
+            if ((sscanf(optarg, "%s", output_file)) != 1)
+            {
+                printf("The path to output file not provided. Exiting...\n");
+                return 0;
+            }
+            break;
+
+        case 'b':
+            if ((sscanf(optarg, "%i", borning_rule)) != 1)
+            {
+                printf("The value of borning rule should be an integer.  Exiting...\n");
+                return 0;
+            }
+            if (borning_rule < 0)
+            {
+                printf("Value of borning rule must be positive. Exiting...\n");
+            }
+            break;
+
+        case 's':
+            if ((sscanf(optarg, "%i", surviving_rule)) != 1)
+            {
+                printf("The value of surviving rule should be an integer.  Exiting...\n");
+                return 0;
+            }
+            if (surviving_rule < 0)
+            {
+                printf("Value of surviving rule must be positive. Exiting...\n");
+            }
+            break;
+
+        case 'p':
+            if ((sscanf(optarg, "%i", init_density)) != 1)
+            {
+                printf("The value of initial population density should be an integer. Exiting...\n");
                 return 0;
             };
             if (*init_density < 0 || *init_density > 100)
             {
-                printf("Value of initial density must be in range <0,100>. Exiting...\n");
+                printf("Value of initial population density must be in range <0,100>. Exiting...\n");
                 return 0;
             }
             break;
@@ -42,7 +88,10 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
             *delay = 1;
             *row_amount = 20;
             *column_amount = 40;
-            *step_amount = 100;
+            *step_max = 100;
+            *step_min = 0;
+            *borning_rule = 3;
+            *surviving_rule = 23;
             return 1;
 
         case 'c':
@@ -83,17 +132,46 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
             }
             break;
 
-        case 's':
-            if ((sscanf(optarg, "%i", step_amount)) != 1)
+        case 'z':
+
+            if ((sscanf(optarg, "%s", result_range)) != 1)
             {
-                printf("The value of steps should be an integer. Exiting...\n");
+                printf("The value of steps should be a string. Exiting...\n");
                 return 0;
             };
-            if (*step_amount < 1)
+            char *step_min_str;
+            char *step_max_str;
+            char *endptr;
+
+            step_min_str = strtok(result_range, ":");
+            step_max_str = strtok(NULL, ":");
+
+            if (step_min_str == NULL || step_max_str == NULL)
             {
-                printf("Value of steps must be positive. Exiting...\n");
+                printf("please provide steps range as intiger\n");
                 return 0;
             }
+            *step_min = strtod(step_min_str, &endptr);
+            if (*endptr != 0)
+            {
+                printf("please provide starting step as an intiger\n");
+                return 0;
+            }
+            *step_max = strtod(step_max_str, &endptr);
+            if (*endptr != 0)
+            {
+                printf("please provide ending step as an intiger\n");
+                return 0;
+            }
+            if (step_max < 0 || step_min < 0)
+            {
+                printf("step range should contain positive value\n");
+            }
+            if (step_min > step_max)
+            {
+                printf("incorrect step range format: the first number (beggining) should be smaller than the second number (ending step)\n");
+            }
+
             break;
 
         case 'd':
@@ -110,16 +188,50 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
             break;
 
         case 'h':
-            printf("usage:  life --columns --rows --steps [--delay]\n"
+            printf("usage:  life [options] --result-range\n"
                    "or\n"
                    "\tlife --tryout\n"
 
-                   "Symulator game of 'Life' based on 23/3 John Conway rule with pseudo-random initial conditions.\n"
+                   "Symulator game of 'Life' originally based on 23/3 John Conway rule able to run with pseudo-random initial conditions or input file.\n"
 
                    "Mandatory arguments to long options are mandatory for short options too.\n"
 
+                   "\tOPTIONS:\n"
+
+                   "\t-t, --tryout\n"
+                   "\t\trun demo with predifined value for arguments: -b 3 -s 23 -c 40 -r 20 -r 0:100 -d 1\n"
+                   "\t\tother arguments are ignored\n"
+
+                   "\t-i, --input-file=path to input file\n"
+                   "\t\tbinary file in csv format with inital board state\n"
+                   "\t\tother arguments except delay and result-range are ignored\n"
+
+                   "\t-o, --output-file=path to output file\n"
+                   "\t\tfile where simulation results will be saved in binary csv format\n"
+                   "\t\tfollowing boards will be seperated by population and iteration counters\n"
+                   "\t\tif argument is used, simulation will be still visible on console\n"
+
                    "\t-c, --columns=n\n"
                    "\t\tcolumn size of board as positive value in range <1-10000>\n"
+
+                   "\t-r, --rows=n\n"
+                   "\t\trows size of board as positive value in range <1-10000>\n"
+
+                   "\t-z, --result-range=n\n"
+                   "\t\tsimulation steps range which will be displayed or saved to file\n"
+                   "\t\texpected format n:m, where n<=m, both intiger, for example 0:100\n"
+
+                   "\t-b, --borning-rule=n\n"
+                   "\t\tborning conditions for cells set as intiger number where every digit mean one rule,\n"
+                   "\t\tfor example 14 - 1 or 4 living neighbours will generate new life (default 3)\n"
+
+                   "\t-s, --surviving-rule=n\n"
+                   "\t\tsurviving conditions for cells set as intiger number where every digit mean one rule,\n"
+                   "\t\tfor example 23 - 2 or 3 living neighbours will keep cell alive (default 23)\n"
+
+                   "\t-p --init-population=n\n"
+                   "\t\tinitial population of living cell on board in percent (default 50),\n"
+                   "\t\tlivng cell location on board is generated randomly\n"
 
                    "\t-d, --delay=n\n"
                    "\t\tdelay in seconds between printing current board (default 1 sec)\n"
@@ -127,19 +239,7 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
                    "\t-h, --help\n"
                    "\t\tdisplay this help and exit\n"
 
-                   "\t-r, --rows=n\n"
-                   "\t\trows size of board as positive value in range <1-10000>\n"
-
-                   "\t-s, --steps=n\n"
-                   "\t\tnumber of simulation steps, positive natural number\n"
-
-                   "\t-i --init=n\n"
-                   "\t\tinitial density of living cell on board in percent (default 50),\n"
-                   "\t\tlivng cell location on board is generated randomly\n"
-
-                   "\t-t, --tryout\n"
-                   "\t\trun demo with predifined value for arguments: -c 40 -r 20 -s 100 -d 1\n"
-                   "\t\tother arguments are ignored\n");
+            );
             return 0;
 
         case '?':
@@ -156,9 +256,14 @@ int validate_user_input(int *init_density, int *row_amount, int *column_amount, 
         }
     }
 
-    if (*row_amount == -1 || *column_amount == -1 || *step_amount == -1)
+    if ((*row_amount == -1 || *column_amount == -1 || *step_max == -1) && (strcmp(input_file, "") == 0))
     {
         printf("Required arguments are missing, please check --help if needed.\n");
+        return 0;
+    }
+    if ((strcmp(input_file, "") != 0) && (*step_max == -1))
+    {
+        printf("Step range is required for input file\n");
         return 0;
     }
     return 1;
