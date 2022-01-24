@@ -5,12 +5,13 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/test",
-            "args": [],
+            "program": "${workspaceFolder}/life",
+            "args": ["-c100","-r50","-z1:0"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

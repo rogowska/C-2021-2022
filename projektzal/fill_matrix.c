@@ -17,7 +17,7 @@ int fill_matrix(int **matrix, int *population, char file_name[])
     fh = fopen(file_name, "r");
     if (fh == NULL)
     {
-        printf("Error opening file");
+        printf("Error opening file\n");
         return 0;
     }
 
@@ -41,7 +41,7 @@ int fill_matrix(int **matrix, int *population, char file_name[])
         }
         else
         {
-            printf("Error reading file");
+            printf("Error reading file\n");
             fclose(fh);
             return 0;
         }

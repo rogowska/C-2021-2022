@@ -17,7 +17,7 @@ int save_matrix(int step_max, int step_min, int iteration, int population, int r
     }
 
     if(step_max!=step_min){
-    fprintf(fp1, "%s%i\n%s%i\n", "Iteration:", iteration, "Population:", population);
+    fprintf(fp1, "\n%s%i\n%s%i\n", "Iteration:", iteration, "Population:", population);
     }
     for (matrix_rowit = 0; matrix_rowit < row_max; matrix_rowit++)
     {

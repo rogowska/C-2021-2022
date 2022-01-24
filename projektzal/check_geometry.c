@@ -18,8 +18,8 @@ int check_geometry(int *row_count, int *column_count, char filename[])
     fh = fopen(filename, "r");
     if (fh == NULL)
     {
-        printf("Error opening file");
-        return (-1);
+        printf("Error opening file\n");
+        return 0;
     }
 
     row_index = 0;
@@ -29,7 +29,6 @@ int check_geometry(int *row_count, int *column_count, char filename[])
         /* check for row counts in file - BOARD_SIDE_MAX*/
         if (fgets(row_array, BOARD_SIDE_MAX, fh) != NULL)
         {
-            printf("Row: %s", row_array);
             state = strtok(row_array, ",");
             row_index++;
             column_index = 0;

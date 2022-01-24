@@ -18,7 +18,7 @@ const int BOARD_SIDE_MAX = 10000;
 int main(int argc, char *argv[])
 {
     int random_value, init_density, rows, row_index, column_index, columns, neighbours_amount, step_max, step_min, population, delay, copy_index;
-    int borning_rule, surviving_rule;
+    int borning_rule, surviving_rule, boundary_condition;
     char input_file[FILENAME_MAX] = "", output_file[FILENAME_MAX] = "";
     /*Initial value for program arguments that are used to validate user input*/
     delay = 1;
@@ -29,8 +29,9 @@ int main(int argc, char *argv[])
     surviving_rule = 23;
     step_min = -1;
     step_max = -1;
+    boundary_condition = 1;
 
-    if (validate_user_input(input_file, output_file, &borning_rule, &surviving_rule, &init_density, &rows, &columns, &step_max, &step_min, &delay, argc, argv) == 0)
+    if (validate_user_input(input_file, output_file, &borning_rule, &surviving_rule, &init_density, &rows, &columns, &step_max, &step_min, &delay, &boundary_condition, argc, argv) == 0)
     {
         return 0;
     }
@@ -88,14 +89,18 @@ int main(int argc, char *argv[])
 
     /*printing on console generated board*/
     printf("\e[1;1H\e[2J"); /*clear terminal*/
-    printf("Generated board:\n");
+    printf("Initial board:\n");
     printf("%s %i\n", "Population:", population);
     print_matrix(rows, columns, matrix_current);
     printf("\n");
+    if (strcmp(output_file, "") != 0 && step_min == 0)
+    {
+        save_matrix(step_max, step_min, 0, population, rows, columns, matrix_current, output_file);
+    }
     sleep(2);
 
     int i;
-    i = 0;
+    i = 1;
     /*calculating the future state of cells on board*/
     while (i <= step_max)
     {
@@ -104,7 +109,7 @@ int main(int argc, char *argv[])
         {
             for (column_index = 0; column_index < columns; column_index++)
             {
-                neighbours_amount = count_neighbours(row_index, column_index, rows, columns, matrix_current);
+                neighbours_amount = count_neighbours(boundary_condition, row_index, column_index, rows, columns, matrix_current);
                 matrix_future[column_index][row_index] = generate_next_state(borning_rule, surviving_rule, neighbours_amount, row_index, column_index, matrix_current);
                 if (matrix_future[column_index][row_index] == 1)
                 {
@@ -123,7 +128,7 @@ int main(int argc, char *argv[])
             print_matrix(rows, columns, matrix_future);
             if (strcmp(output_file, "") != 0)
             {
-                save_matrix(step_max, step_min, i, population, rows, columns, matrix_current, output_file);
+                save_matrix(step_max, step_min, i, population, rows, columns, matrix_future, output_file);
             }
         }
 
