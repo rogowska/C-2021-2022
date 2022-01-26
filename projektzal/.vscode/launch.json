@@ -4,12 +4,14 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+
         {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/life",
-            "args": ["-t"],
+            "args": ["-c100","-r50","-z1:0"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
