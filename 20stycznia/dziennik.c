@@ -10,16 +10,26 @@ struct student
     char name[30];
     char surname[30];
     char grades[30][4];
-    int grades_number = 0;
+    int grades_number;
 };
 
 float convert(char *a);
 float convert(char *a)
 {
-    if (/* condition */)
-    {
-        /* code */
-    }
+    int i;
+    float number = 0;
+    for(i=0; i<4; i++){
+        if(strcmp(a[i], "+")){
+            number=number + 0.25;
+            a = strok(*a, "+");
+        };
+            if(strcmp(a[i], "-")){
+            number= number - 0.25;
+            a = strok(*a, "-");
+        };
+    };
+    number += atof(a);
+    return number;
 };
 
 int compare(struct student s1, struct student s2);
@@ -46,8 +56,8 @@ void normalize(char *a)
 
 int main(int argc, char **argv)
 {
-    float o, sum, group_sum;
-    int a = argc, student_counter, i, j, grades_number, significant_grades;
+    float float_grade, sum, group_sum;
+    int file_counter = argc, student_counter, i, j, grades_number, significant_grades;
     FILE *f;
     struct student group[30];
     char sur[30], nam[30], gr[4];
@@ -57,15 +67,19 @@ int main(int argc, char **argv)
         fprintf(stderr, "You need to provide a file path as an argument\n");
         return 1;
     }
-    while (a > 0)
+    while (file_counter > 0)
     {
-        student_counter = 0;
-        f = fopen(argv[a], "r");
+        f = fopen(argv[file_counter], "r");
         if (f == NULL)
         {
             fprintf(stderr, "File is empty\n");
             continue;
         }
+        student_counter = 0;
+        for (i = 0; i <= 30; i++)
+        {
+            group[i].grades_number = 0;
+        };
         while (!feof(f))
         {
             scanf("%s %s %s", nam, sur, gr);
@@ -77,22 +91,22 @@ int main(int argc, char **argv)
                 if ((!strcmp(sur, group[i].surname) && (!strcmp(nam, group[i].name))))
                 {
                     grades_number = group[i].grades_number;
-                    group[i].grades[grades_number] = gr;
+                    strcpy(group[i].grades[grades_number], gr);
                     grades_number++;
                 }
                 else
                 {
                     student_counter--;
-                    group[i + 1].name = nam;
-                    group[i + 1].surname = sur;
-                    group[i + 1].grades[0] = gr;
+                    strcpy(group[i + 1].name, nam);
+                    strcpy(group[i + 1].surname, sur);
+                    strcpy(group[i + 1].grades[0], gr);
                 }
                 group[i].grades_number = grades_number;
             }
         }
 
         qsort(group, student_counter, sizeof(struct student), compare);
-        printf("Grades from the file: %s\n", argv[a]);
+        printf("Grades from the file: %s\n", argv[file_counter]);
         for (i = 0; i < student_counter; i++)
         {
             sum = 0;
@@ -101,21 +115,22 @@ int main(int argc, char **argv)
             for (j = 0; j < group[i].grades_number; j++)
             {
                 printf("%s ", group[i].grades[j]);
-                o = convert(group[i].grades[j]);
-                if (o < 0)
+                float_grade = convert(group[i].grades[j]);
+                if (!(float_grade == 0) && !(float_grade >= 2 && float_grade <= 5))
                 {
                     significant_grades--;
                 }
                 else
                 {
-                    sum += o;
+                    sum += float_grade;
                 }
             }
             student_average[i] = sum / (float)significant_grades;
             printf("Student's average:%.2f\n", student_average[i]);
             group_sum += student_average[i];
         }
-        printf("Group's average: %5f\n", group_sum/student_counter);
+        printf("Group's average: %5f\n", group_sum / student_counter);
+        file_counter--;
     }
     return 0;
 }
