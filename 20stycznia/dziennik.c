@@ -133,11 +133,11 @@ int main(int argc, char **argv)
                     sum += float_grade;
                 }
             }
-            student_average[i] = sum / (float)significant_grades;
+            student_average[i] = sum / (float)significant_grades; /*if dla 0 ocen, rozne przypadki dla fscana != 3 (2, 1, 0 itd) zifowac*/
             printf("Student's average:%.2f\n", student_average[i]);
             group_sum += student_average[i];
         }
-        printf("Group's average: %5f\n", group_sum / student_counter);
+        printf("Group's average: %2f\n", group_sum / student_counter);
         file_counter--;
     }
     return 0;
