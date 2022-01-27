@@ -19,13 +19,13 @@ float convert(char *a)
     int i;
     float number = 0;
     for(i=0; i<4; i++){
-        if(strcmp(a[i], "+")){
+        if(strcmp(&a[i], "+")){
             number=number + 0.25;
-            a = strok(*a, "+");
+            a = strtok(a, "+");
         };
-            if(strcmp(a[i], "-")){
+            if(strcmp(&a[i], "-")){
             number= number - 0.25;
-            a = strok(*a, "-");
+            a = strtok(a, "-");
         };
     };
     number += atof(a);
@@ -49,8 +49,9 @@ void normalize(char *a)
 {
     int i;
     a[0] = toupper(a[0]);
-    for (i = 1; i <= strlen(a); tolower(a[i]))
+    for (i = 1; i <= strlen(a); i++)
     {
+        a[i] = tolower(a[i]);
     }
 };
 
