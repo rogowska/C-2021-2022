@@ -63,7 +63,7 @@ void normalize(char *a)
 int main(int argc, char **argv)
 {
     float float_grade, student_sum, group_sum;
-    int file_counter = argc, student_counter, i, j, grades_number, significant_grades, new_student, fscanf_returned_value;
+    int file_counter = argc, student_counter, student_with_no_grades_counter, i, j, grades_number, significant_grades, new_student, fscanf_returned_value;
     FILE *f;
     struct student group[30];
     char sur[30], nam[30], gr[4];
@@ -87,6 +87,7 @@ int main(int argc, char **argv)
         else
         {
             student_counter = 0;
+            student_with_no_grades_counter = 0;
             /*set all student's grade counter to 0*/
             for (i = 0; i <= 30; i++)
             {
@@ -111,10 +112,10 @@ int main(int argc, char **argv)
                     normalize(sur);
                     normalize(nam);
                     /*new student indicator set as true*/
-                    new_student = 1; 
+                    new_student = 1;
                     for (i = 0; i < student_counter + 1; i++)
                     {
-                        /*check for student in group*/ 
+                        /*check for student in group*/
                         if ((!strcmp(sur, group[i].surname) && (!strcmp(nam, group[i].name))))
                         {
                             grades_number = group[i].grades_number;
@@ -168,6 +169,7 @@ int main(int argc, char **argv)
                     if (significant_grades <= 0)
                     {
                         printf("%s\n", "Student has no grades.");
+                        student_with_no_grades_counter++;
                     }
                     else
                     {
@@ -176,7 +178,7 @@ int main(int argc, char **argv)
                         group_sum += student_average[i];
                     }
                 }
-                printf("Group's average: %.2f\n\n", group_sum / student_counter);
+                printf("Group's average: %.2f\n\n", group_sum / (student_counter - student_with_no_grades_counter));
             }
         }
         file_counter--;
