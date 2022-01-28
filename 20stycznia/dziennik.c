@@ -62,7 +62,7 @@ void normalize(char *a)
 
 int main(int argc, char **argv)
 {
-    float float_grade, sum, group_sum;
+    float float_grade, student_sum, group_sum;
     int file_counter = argc, student_counter, i, j, grades_number, significant_grades, new_student, fscanf_returned_value;
     FILE *f;
     struct student group[30];
@@ -75,83 +75,100 @@ int main(int argc, char **argv)
     }
     while (file_counter - 1 > 0)
     {
+        group_sum = 0;
         f = fopen(argv[file_counter - 1], "r");
         if (f == NULL)
         {
-            fprintf(stderr, "File is empty\n");
-            return 1;
+            fprintf(stderr, "%s %s\n\n", "Unable to open the file:", argv[file_counter - 1]);
         }
-        student_counter = 0;
-        for (i = 0; i <= 30; i++)
+        else
         {
-            group[i].grades_number = 0;
-        };
-        while (1)
-        {
-            fscanf_returned_value = fscanf(f, "%s %s %s", nam, sur, gr);
-            if(feof(f) == 1){
-                break;
-            }
-            if (fscanf_returned_value != 3)
+            student_counter = 0;
+            for (i = 0; i <= 30; i++)
             {
-                printf("Invalid data format. Exiting...\n");
-                return 1;
-            }
-            normalize(sur);
-            normalize(nam);
-            new_student = 1;
-            for (i = 0; i < student_counter + 1; i++)
+                group[i].grades_number = 0;
+            };
+            while (1)
             {
-                if ((!strcmp(sur, group[i].surname) && (!strcmp(nam, group[i].name))))
+                fscanf_returned_value = fscanf(f, "%s %s %s", nam, sur, gr);
+                if (fscanf_returned_value == -1)
                 {
-                    grades_number = group[i].grades_number;
-                    strcpy(group[i].grades[grades_number], gr);
-                    group[i].grades_number++;
-                    new_student = 0;
+                    break;
                 }
-            }
-            if (new_student)
-            {
-                student_counter++;
-                strcpy(group[student_counter - 1].name, nam);
-                strcpy(group[student_counter - 1].surname, sur);
-                strcpy(group[student_counter - 1].grades[0], gr);
-                group[student_counter - 1].grades_number = 1;
-            }
-        }
-
-        qsort(group, student_counter, sizeof(struct student), compare);
-        printf("Grades from the file: %s\n", argv[file_counter - 1]);
-        for (i = 0; i < student_counter; i++)
-        {
-            sum = 0;
-            significant_grades = group[i].grades_number;
-            printf("%s %s:", group[i].surname, group[i].name);
-            for (j = 0; j < group[i].grades_number; j++)
-            {
-                printf("%s ", group[i].grades[j]);
-                float_grade = convert(group[i].grades[j]);
-                if (!(float_grade == 0) && !(float_grade >= 2 && float_grade <= 5))
+                if ((fscanf_returned_value < 3) && (fscanf_returned_value > 0))
                 {
-                    significant_grades--;
+                    fprintf(stderr, "%s\n", nam);
+                    fprintf(stderr, "Invalid data format, expected: \nSurname Name grade (as: 0,2,3,4,5 optionally with '+' or '-') \nDiscarding record...\n");
                 }
                 else
                 {
-                    sum += float_grade;
+
+                    normalize(sur);
+                    normalize(nam);
+                    new_student = 1;
+                    for (i = 0; i < student_counter + 1; i++)
+                    {
+                        if ((!strcmp(sur, group[i].surname) && (!strcmp(nam, group[i].name))))
+                        {
+                            grades_number = group[i].grades_number;
+                            strcpy(group[i].grades[grades_number], gr);
+                            group[i].grades_number++;
+                            new_student = 0;
+                        }
+                    }
+                    if (new_student)
+                    {
+                        student_counter++;
+                        strcpy(group[student_counter - 1].name, nam);
+                        strcpy(group[student_counter - 1].surname, sur);
+                        strcpy(group[student_counter - 1].grades[0], gr);
+                        group[student_counter - 1].grades_number = 1;
+                    }
+                }
+                if (feof(f) == 1)
+                {
+                    break;
                 }
             }
-            if (significant_grades <= 0)
+
+            if (student_counter > 0)
             {
-                printf("%s\n", "Student has no grades.");
-            }
-            else
-            {
-                student_average[i] = sum / (float)significant_grades;
-                printf("Student's average:%.2f\n", student_average[i]);
-                group_sum += student_average[i];
+
+                qsort(group, student_counter, sizeof(struct student), compare);
+                printf("Grades from the file: %s\n", argv[file_counter - 1]);
+                for (i = 0; i < student_counter; i++)
+                {
+                    student_sum = 0;
+                    significant_grades = group[i].grades_number;
+                    printf("%s %s: ", group[i].surname, group[i].name);
+                    for (j = 0; j < group[i].grades_number; j++)
+                    {
+                        printf("%s ", group[i].grades[j]);
+                        float_grade = convert(group[i].grades[j]);
+                        if (!(float_grade == 0) && !(float_grade >= 2 && float_grade <= 5))
+                        {
+                            fprintf(stderr, "%s %s %s %s\n", group[i].surname, group[i].name, group[i].grades[j], "Invalid data format, expected grade should be in range: <2,5> or 0");
+                            significant_grades--;
+                        }
+                        else
+                        {
+                            student_sum += float_grade;
+                        }
+                    }
+                    if (significant_grades <= 0)
+                    {
+                        printf("%s\n", "Student has no grades.");
+                    }
+                    else
+                    {
+                        student_average[i] = student_sum / (float)significant_grades;
+                        printf("Student's average: %.2f\n", student_average[i]);
+                        group_sum += student_average[i];
+                    }
+                }
+                printf("Group's average: %.2f\n\n", group_sum / student_counter);
             }
         }
-        printf("Group's average: %2f\n\n", group_sum / student_counter);
         file_counter--;
     }
     return 0;
