@@ -79,7 +79,7 @@ int main(int argc, char **argv)
         if (f == NULL)
         {
             fprintf(stderr, "File is empty\n");
-            break;
+            return 1;
         }
         student_counter = 0;
         for (i = 0; i <= 30; i++)
