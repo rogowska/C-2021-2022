@@ -68,11 +68,14 @@ int main(int argc, char **argv)
     struct student group[30];
     char sur[30], nam[30], gr[4];
     float student_average[30];
+
     if (argc < 2)
     {
         fprintf(stderr, "You need to provide a file path as an argument\n");
         return 1;
     }
+
+    /*loop over all files*/
     while (file_counter - 1 > 0)
     {
         group_sum = 0;
@@ -84,10 +87,12 @@ int main(int argc, char **argv)
         else
         {
             student_counter = 0;
+            /*set all student's grade counter to 0*/
             for (i = 0; i <= 30; i++)
             {
                 group[i].grades_number = 0;
             };
+            /*loop till the end of file*/
             while (1)
             {
                 fscanf_returned_value = fscanf(f, "%s %s %s", nam, sur, gr);
@@ -95,6 +100,7 @@ int main(int argc, char **argv)
                 {
                     break;
                 }
+                /*every line should contain 3 strings*/
                 if ((fscanf_returned_value < 3) && (fscanf_returned_value > 0))
                 {
                     fprintf(stderr, "%s\n", nam);
@@ -102,12 +108,13 @@ int main(int argc, char **argv)
                 }
                 else
                 {
-
                     normalize(sur);
                     normalize(nam);
-                    new_student = 1;
+                    /*new student indicator set as true*/
+                    new_student = 1; 
                     for (i = 0; i < student_counter + 1; i++)
                     {
+                        /*check for student in group*/ 
                         if ((!strcmp(sur, group[i].surname) && (!strcmp(nam, group[i].name))))
                         {
                             grades_number = group[i].grades_number;
@@ -116,6 +123,7 @@ int main(int argc, char **argv)
                             new_student = 0;
                         }
                     }
+                    /*add new student*/
                     if (new_student)
                     {
                         student_counter++;
@@ -131,20 +139,22 @@ int main(int argc, char **argv)
                 }
             }
 
+            /*student statistic*/
             if (student_counter > 0)
             {
-
                 qsort(group, student_counter, sizeof(struct student), compare);
                 printf("Grades from the file: %s\n", argv[file_counter - 1]);
                 for (i = 0; i < student_counter; i++)
                 {
                     student_sum = 0;
+                    /*significant_grades variable counts number of proper grades*/
                     significant_grades = group[i].grades_number;
                     printf("%s %s: ", group[i].surname, group[i].name);
                     for (j = 0; j < group[i].grades_number; j++)
                     {
                         printf("%s ", group[i].grades[j]);
                         float_grade = convert(group[i].grades[j]);
+                        /*remove incorrect grade from averages*/
                         if (!(float_grade == 0) && !(float_grade >= 2 && float_grade <= 5))
                         {
                             fprintf(stderr, "%s %s %s %s\n", group[i].surname, group[i].name, group[i].grades[j], "Invalid data format, expected grade should be in range: <2,5> or 0");
