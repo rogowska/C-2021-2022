@@ -33,11 +33,13 @@ int validate_user_input(char *input_file, char *output_file, int *borning_rule, 
         switch (c)
         {
         case 'w':
-            if ((sscanf(optarg, "%i", boundary_condition)) != 1){
+            if ((sscanf(optarg, "%i", boundary_condition)) != 1)
+            {
                 printf("The value of boundary condition should be an integer.  Exiting...\n");
                 return 0;
             }
-            if(*boundary_condition!=1 && *boundary_condition!=2){
+            if (*boundary_condition != 1 && *boundary_condition != 2)
+            {
                 printf("Boundary condition value should be 1 or 2. Exiting...\n");
                 return 0;
             }
@@ -203,9 +205,12 @@ int validate_user_input(char *input_file, char *output_file, int *borning_rule, 
             break;
 
         case 'h':
-            printf("usage:  life [options] --result-range\n"
+            printf("usage:\n"
+                   " \tlife --columns=n --rows=n --result-range=i:j [options]\n"
                    "or\n"
-                   "\tlife --tryout\n"
+                   "\tlife --input-file=path to input file --result-range=i:j [options]\n"
+                   "or\n"
+                   "\tlife --tryout\n\n"
 
                    "Symulator game of 'Life' originally based on 23/3 John Conway rule able to run with pseudo-random initial conditions or input file.\n"
 
@@ -219,7 +224,7 @@ int validate_user_input(char *input_file, char *output_file, int *borning_rule, 
 
                    "\t-i, --input-file=path to input file\n"
                    "\t\tfile in csv format with inital board state, expected values: 1 for live cell, 0 for dead\n"
-                   "\t\tother arguments except delay and result-range are ignored\n"
+                   "\t\twhen used, following arguments are ignored: --columns, --rows, --init-population\n"
 
                    "\t-o, --output-file=path to output file\n"
                    "\t\tfile where simulation results will be saved in csv format\n"
@@ -227,14 +232,16 @@ int validate_user_input(char *input_file, char *output_file, int *borning_rule, 
                    "\t\tthe simulation will still be displayed on the console as well\n"
 
                    "\t-c, --columns=n\n"
-                   "\t\tcolumn size of board as positive value in range <1-10000>\n"
+                   "\t\tcolumn size of board as positive value in range <1-10000>,\n"
+                   "\t\targument ignored when --input-file is used\n"
 
                    "\t-r, --rows=n\n"
-                   "\t\trows size of board as positive value in range <1-10000>\n"
+                   "\t\trows size of board as positive value in range <1-10000>,\n"
+                   "\t\targument ignored when --input-file is used\n"
 
-                   "\t-z, --result-range=n\n"
+                   "\t-z, --result-range=i:j\n"
                    "\t\tsimulation steps range which will be displayed or saved to file\n"
-                   "\t\texpected format n:m, where n<=m, both integer, for example 0:100\n"
+                   "\t\texpected format i:j, where i<=j, both integer, for example 0:100\n"
 
                    "\t-w, --boundary-condition=n\n"
                    "\t\targument define behaviour of cells on board boundary, possible value 1 or 2 (default 1)\n"
@@ -251,7 +258,8 @@ int validate_user_input(char *input_file, char *output_file, int *borning_rule, 
 
                    "\t-p --init-population=n\n"
                    "\t\tinitial population of living cell on board in percent (default 50),\n"
-                   "\t\tlivng cell location on board is generated randomly\n"
+                   "\t\tlivng cell location on board is generated randomly,\n"
+                   "\t\targument ignored when --input-file is used\n"
 
                    "\t-d, --delay=n\n"
                    "\t\tdelay in seconds between printing current board (default 1 sec)\n"
@@ -276,14 +284,54 @@ int validate_user_input(char *input_file, char *output_file, int *borning_rule, 
         }
     }
 
-    if ((*row_amount == -1 || *column_amount == -1 || *step_max == -1) && (strcmp(input_file, "") == 0))
+    if ((*row_amount == -1) && (*column_amount == -1) && (*step_max == -1) && (strcmp(input_file, "") == 0))
     {
-        printf("Required arguments are missing, please check --help if needed.\n");
+
+        printf("life usage:\n"
+               " \tlife --columns=n --rows=n --result-range=i:j [options]\n"
+               "or\n"
+               "\tlife --input-file=path to input file --result-range=i:j [options]\n"
+               "or\n"
+               "\tlife --tryout\nplease check --help if needed.\n");
+
         return 0;
     }
+
+    if ((*row_amount == -1 || *column_amount == -1 || *step_max == -1) && (strcmp(input_file, "") == 0))
+    {
+        char missing_argument[300] = "";
+        if (*row_amount == -1)
+        {
+            strcat(missing_argument, " --rows=n (or -r n), number of rows on board\n");
+        }
+        if (*column_amount == -1)
+        {
+            strcat(missing_argument, " --columns=n (or -c n), number of columns on board\n");
+        }
+        if (*step_max == -1)
+        {
+            strcat(missing_argument, " --result-range=i:j (or -z i:j), result range\n");
+        }
+        else{
+            if ((*row_amount == -1) && (*column_amount == -1)){
+                printf("life usage:\n"
+               " \tlife --columns=n --rows=n --result-range=i:j [options]\n"
+               "or\n"
+               "\tlife --input-file=path to input file --result-range=i:j [options]\n"
+               "or\n"
+               "\tlife --tryout\nplease check --help if needed.\n");
+               return 0;
+            }
+        }
+
+        printf("%s\n%s%s", "Required argument(s) missing:", missing_argument, "please check --help if needed.\n");
+
+        return 0;
+    }
+
     if ((strcmp(input_file, "") != 0) && (*step_max == -1))
     {
-        printf("Step range is required for input file\n");
+        printf("Result range is required for input file\nusage: life --input-file=path to input file --result-range=i:j [options]\n");
         return 0;
     }
     return 1;
