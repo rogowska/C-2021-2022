@@ -318,8 +318,7 @@ int validate_user_input(char *input_file, char *output_file, int *borning_rule, 
                " \tlife --columns=n --rows=n --result-range=i:j [options]\n"
                "or\n"
                "\tlife --input-file=path to input file --result-range=i:j [options]\n"
-               "or\n"
-               "\tlife --tryout\nplease check --help if needed.\n");
+               "please check --help if needed.\n");
                return 0;
             }
         }
