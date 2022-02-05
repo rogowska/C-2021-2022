@@ -1,0 +1,12 @@
+#!/usr/bin/expect -f
+
+set ilosc_przypadkow [lindex $argv 0]
+
+set timeout -1
+spawn ./generator
+expect -exact "podaj ilosc liczb na ktorych chcesz przeprowadzic testy:\r"
+send -- "$ilosc_przypadkow\r"
+expect "podaj liczbe przedzialow:\r"
+send -- "99\r" 
+expect eof
+ 

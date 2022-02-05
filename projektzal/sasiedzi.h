@@ -1,1 +1,0 @@
-int sasiedzi(int, int, int, int, int**);

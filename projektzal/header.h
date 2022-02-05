@@ -1,0 +1,1 @@
+extern const int BOARD_SIDE_MAX;

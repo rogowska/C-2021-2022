@@ -1,0 +1,81 @@
+ocena na linijke
+imie nazwisko ocena
+wylicza srednia 
+wyrzuca na stdout podsumowanie postaci, posortowana lista naziwsko imie: lista ocen ktora znajdzie w pliku 
+na koniec : wyliczona srednia
+cwiczenie na strukture
+grupa macierz studentow, 
+funkcja porownujaca imiona i nazwiska uczniow 
+funkcja bierze 1 lub wiecej argumentow, 
+sprawdza czy student juz jest w macierzy i wtedy tylko dopisuje ocene, wpp wpisuje nowego studenta i tak leci przez plik, 
+do macierzy dopisujemy znormalizowanego studenta (pierwsza litera duza)
+oceny moga byc polowiczne, funkcja konwertujaca -3 na poprawnego floata
+
+do sortowania qsort
+- odejmuje 0.25 a plus dodaje
+dopuszcza ocene 0, i ocena z przedzialu <2,6)
+wczytuje, normalizuje i zaczynam obrabiac
+normalizacja - 1 litera duza, reszta mala, reszta znakow nieruszalna
+
+struktura opisujaca studenta
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+struct student{
+  char nazwisko[30];
+  char imie[30];
+  char oceny[30][4];
+  int liczba_ocen=0;
+};
+
+int porownuj(struct student 51, struct student 52);
+float convert(char *a);
+void normalizuj(char *a);
+
+int main(int argc, char argv[][]){
+  FILE *f;
+  struct student grupa[30];
+  int liczba_studentow, i, j, naloz=0, do_sredniej;
+  char im[20], naz[30], oc[4];
+  do_sredniej=grupa[i].liczba_ocen;
+  if(argc<2){
+    fprintf(stdr, "komunikat");
+    return 1;
+  }
+  *f=fopen(argv[1], "r");
+  if(f==NULL){fprintf(stdr, "...."");
+  return 2;
+  ((continue??))
+  }
+  lista_studentow=0;
+  while(!feof(f)){
+  scanf("%s %s %s", im, naz, oc); //bezpieczniejszy scanf jakis ?  ? ?
+  normalizuj(im); normalizuj(naz);
+  naloz =0;
+  for(i=0; i<liczba_studentow; i++){
+    if((!strcmp(naz, grupa[i].nazwisko)&&(!strcmp(im, grupa[i].imie)))){
+        bah bah petla costam petla costam nifowejiowe)}}
+    }
+  }
+qsort(grupa, lista_studentow, sizeof(struct student), porownuj);
+printf("oceny z pliku %s\n", argv[i]);
+  
+for(i=0; i<lista_studentow; i++){
+  printf ("%s %s:", grupa[i].nazwisko grupa[i].imie);
+  for(j=0; j<grupa[i].liczba_ocen; j++){
+    printf(" %s ", grupa[i].ocena[j]);
+    float o= konwertuj(grupa[i].ocena[j]);
+    if(o<0){
+      do_sredniej--;
+    else{
+      suma+=o;
+    }
+    }
+printf(" :%.2f\n" suma/do_sredniej);
+  }
+
+  }
+} 
+
