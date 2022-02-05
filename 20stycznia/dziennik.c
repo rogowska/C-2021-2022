@@ -9,29 +9,46 @@ struct student
 {
     char name[30];
     char surname[30];
-    char grades[30][4];
+    char grades[30][5];
     int grades_number;
 };
 
-float convert(char *a);
-float convert(char *a)
+float convert(char a[4]);
+float convert(char a[4])
 {
-    int i;
+    int i, plusminus_logic = 0;
     float number = 0;
+    char grade[4];
+    char *temp;
+
+    strcpy(grade, a);
     for (i = 0; i < 4; i++)
     {
-        if (strcmp(&a[i], "+") == 0)
+        if (a[i] == '+')
         {
+            plusminus_logic++;
             number = number + 0.25;
-            a = strtok(a, "+");
+            temp = strtok(grade, "+");
         };
-        if (strcmp(&a[i], "-") == 0)
+        if (a[i] == '-')
         {
+            plusminus_logic++;
             number = number - 0.25;
-            a = strtok(a, "-");
+            temp = strtok(grade, "-");
         };
     };
-    number += atof(a);
+    if (plusminus_logic > 1)
+    {
+        return -1;
+    }
+    if (plusminus_logic == 0)
+    {
+        number += atof(grade);
+    }
+    else
+    {
+        number += atof(temp);
+    }
     return number;
 };
 
@@ -63,15 +80,16 @@ void normalize(char *a)
 int main(int argc, char **argv)
 {
     float float_grade, student_sum, group_sum;
-    int file_counter = argc, student_counter, student_with_no_grades_counter, i, j, grades_number, significant_grades, new_student, fscanf_returned_value;
+    int file_counter = argc, student_counter, student_with_no_grades_counter, i, j;
+    int grades_number, significant_grades, new_student, fscanf_returned_value;
     FILE *f;
     struct student group[30];
-    char sur[30], nam[30], gr[4];
+    char sur[30], nam[30], gr[5];
     float student_average[30];
 
     if (argc < 2)
     {
-        fprintf(stderr, "You need to provide a file path as an argument\n");
+        fprintf(stderr, "File path to students grades is missing\n");
         return 1;
     }
 
@@ -92,6 +110,8 @@ int main(int argc, char **argv)
             for (i = 0; i <= 30; i++)
             {
                 group[i].grades_number = 0;
+                memset(group[i].name, 0, sizeof group[i].name);
+                memset(group[i].surname, 0, sizeof group[i].surname);
             };
             /*loop till the end of file*/
             while (1)
@@ -105,7 +125,10 @@ int main(int argc, char **argv)
                 if ((fscanf_returned_value < 3) && (fscanf_returned_value > 0))
                 {
                     fprintf(stderr, "%s\n", nam);
-                    fprintf(stderr, "Invalid data format, expected: \nSurname Name grade (as: 0,2,3,4,5 optionally with '+' or '-') \nDiscarding record...\n");
+                    fprintf(stderr, "Invalid data format, expected:"
+                                    "\nSurname Name grade "
+                                    "\nGrade should be in range: <2,5> or 0 (optionally single '+' or '-' with score) "
+                                    "Discarding record...\n");
                 }
                 else
                 {
@@ -139,7 +162,7 @@ int main(int argc, char **argv)
                     break;
                 }
             }
-
+            fclose(f);
             /*student statistic*/
             if (student_counter > 0)
             {
@@ -158,7 +181,9 @@ int main(int argc, char **argv)
                         /*remove incorrect grade from averages*/
                         if (!(float_grade == 0) && !(float_grade >= 2 && float_grade <= 5))
                         {
-                            fprintf(stderr, "%s %s %s %s\n", group[i].surname, group[i].name, group[i].grades[j], "Invalid data format, expected grade should be in range: <2,5> or 0");
+                            fprintf(stderr, "%s %s %s %s\n",
+                                    group[i].surname, group[i].name, group[i].grades[j],
+                                    "Invalid data format, expected grade should be in range: <2,5> or 0 (optionally single '+' or '-' with score)");
                             significant_grades--;
                         }
                         else
