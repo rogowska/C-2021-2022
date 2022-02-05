@@ -76,7 +76,9 @@ void normalize(char *a)
         a[i] = tolower(a[i]);
     }
 };
-
+/*
+main
+*/
 int main(int argc, char **argv)
 {
     float float_grade, student_sum, group_sum;
@@ -203,7 +205,12 @@ int main(int argc, char **argv)
                         group_sum += student_average[i];
                     }
                 }
+                if((student_counter - student_with_no_grades_counter)!=0){
                 printf("Group's average: %.2f\n\n", group_sum / (student_counter - student_with_no_grades_counter));
+                }
+                else{
+                    printf("Group's average is not N/A\n");
+                }
             }
         }
         file_counter--;
